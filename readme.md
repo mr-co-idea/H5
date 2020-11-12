@@ -4,8 +4,8 @@
 ##### 适用于结构相仿，代码重复性高的快速开发型H5项目
 ***
 ### 技术指南
-* webpack + vue2 + vant
-* babel + postcss
+* webpack4|5 + vue2 + vant
+* babel7 + postcss8
 * inquirer
 * sass + less (可选)
 * jsx + ts (可选)
@@ -72,8 +72,157 @@
 #### 工程搭建
 1. 创建目录结构
 2. 创建项目：`npm init`
-3. 安装依赖：``
+3. 安装依赖：
+> - webpack
+>> ` npm install webpack webpack-cli webpack-dev-server webpack-merge -D`
+> - webpack插件
+>> ` npm install html-webpack-plugin clean-webpack-plugin optimize-css-assets-webpack-plugin mini-css-extract-plugin -D`
+> - webpack移动端调试插件
+>> ` npm install vconsole-webpack-plugin -D`
+> - webpack 基础loader
+>> ` npm install style-loader css-loader url-loader -D`
+> - babel
+>> ` npm install @babel/core @babel/preset-env @babel/plugin-transform-runtime babel-loader -D`
+> - postcss
+>> ` npm install postcss postcss-load-config postcss-loader -D`
+> - vue
+>> ` npm install vue vuex vue-router axios vant -S`  
+` npm install vue-loader vue-template-compiler -D`
+> - 工程脚本依赖
+>> ` npm install inquirer chalk cross-env -D`
+> - H5适配
+>> ` npm install autoprefixer postcss-pxtorem -D`
+> - less + sass (可选)
+>> ` npm install less less-loader node-sass sass-loader -D`
+> - jsx (可选)
+>> ` npm install babel-plugin-import babel-plugin-syntax-jsx babel-plugin-transform-vue-jsx @babel/helper-module-imports babel-helper-vue-jsx-merge-props -D`
+> - ts (可选)
+>> ` npm install typescript ts-loader  -D`
+> - tsx (可选)
+>> ` npm install vue-tsx-support -D`  
+` npm install vue-class-component vue-property-decorator -S`
+4. 配置webpack：
+> * config/utils.js
+>> `
+const fs = require('fs'),
+	chalk = require('chalk');
 
+/**
+ * 读取配置信息
+ * @param {String} project 
+ * @returns {Object}
+ */
+const readJson = (project) => {
+	let data = {};
+	try {
+		data = fs.readFileSync(`./build/project/${project}.json`, {
+			encoding: 'utf-8'
+		});
+	} catch (e) {
+		console.info(e);
+		console.info(chalk`[rgb(255,0,0) 读取配置文件失败，采用默认配置]`);
+	}
+
+	return Object.assign({}, JSON.parse(data));
+
+};
+
+/**
+ * 处理环境变量数据
+ * @param {Object} env 
+ * @returns {Object}
+ */
+const processEnv = (env) => {
+
+	const env_final = {};
+	const keys = Object.keys(env);
+
+	keys.forEach(e => {
+
+		env_final['process.env.' + e] = JSON.stringify(env[e]);
+
+	})
+
+	return env_final;
+
+};
+/**
+ * 复制文件
+ * @param {*} src 
+ * @param {*} dst 
+ */
+const copy = (src, dst) => {
+	const paths = fs.readFileSync(src);
+	path.forEach(e => {
+		const src_final = src + '/' + e;
+		const dst_final = dst + '/' + e;
+		fs.stat(src_final, (err, stats) => {
+			if (err) throw err;
+			if (stats.isFile()) {
+				let readable = fs.createReadStream(src_final);
+				let writeable = fs.createWriteStream(dst_final);
+				readable.pipe(writeable);
+			} else if (stats.isDirectory()) {
+				checkDirectory(src_final, dst_finalf);
+			}
+		})
+	})
+}
+
+const checkDirectory = (src, dst, callback) => {
+	fs.access(dst, fs.constants.F_OK, err => {
+		if (err) {
+			fs.mkdirSync(dst);
+			callback(src, dst);
+		} else {
+			callback(src, dst);
+		}
+	})
+}
+
+/**
+ * 创建配置文件
+ * @param {String} EN 
+ * @param {String} CN 
+ */
+const createJson = (EN, CN) => {
+	const file = path.join(__dirname, `../project/${EN}.json`);
+	const content = JSON.parse(fs.readdirSync(path.join(__dirname, '../project/demo.json'), { encoding: 'utf-8' }));
+	content.base.name = CN;
+	fs.writeFile(file, JSON.stringify(content), err => {
+		if (err) throw err;
+		console.info(chalk`[rgb(0,255,0) 配置文件创建成功！]`)
+	})
+}
+
+/**
+ * 创建文件夹
+ * @param {String} EN 
+ */
+const copyDir = (EN) => {
+	fa.mkdirSync(path.join(__dirname, `../../server/${EN}`))
+}
+
+module.exports = {
+	processEnv,
+	readJson,
+	checkDirectory,
+	copy,
+	createJson,
+	copyDir
+}
+`
+> * webpack.conofig.js
+>> ``` javascript
+
+```
+
+
+
+### 待增加
+* tree-shaking配置
+* jest
+* eslint
 ### 补充说明
 #### GUI
 * 采用vite + vue3 + antd + rollup + koa 进行构建

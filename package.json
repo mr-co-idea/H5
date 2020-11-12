@@ -1,0 +1,68 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "***\r ### 技术指南\r * webpack + vue2 + vant\r * babel + postcss\r * inquirer\r * sass + less (可选)\r * jsx + ts (可选)\r ### 工程\r #### 目录结构\r     |-- build\r       |-- config\r \t    |-- webpack.base.js                    (公共配置)\r \t    |-- webpack.dev.js                     (development环境配置)\r \t    |-- webpack.prod.js                    (production环境配置)\r         |-- create.js                          (创建新的子项目脚本)\r \t\t|-- utils.js                           (工具)\r       |-- project                              (子项目配置)\r \t    |-- demo.json                          (子项目配置文件)\r \t\t|-- projectA.json\r \t  |-- GUI                                  (预留：详情见底部)\r \t  |-- webpack.config.js                    (配置汇总)\r     |-- dist                                   (打包输出目录)\r \t|-- public\r \t  |-- index.html\r \t|-- server                                 (服务：另行介绍)\r \t|-- src                                    (开发目录)\r \t  |-- common                               (公共资源目录)\r \t    |-- assets                             (静态资源)\r \t\t|-- components                         (公共组件)\r \t\t  |-- cpt_form                         (form组件,另行说明)\r \t\t  |-- othens...\r \t\t  |-- index.cpt.js                     (组件注册)\r \t\t|-- modules\r \t\t  |-- providers                        (网络请求)\r \t\t    |-- http-service.base.js           \r \t\t  |-- stores                           (store，在子项目引入，并通过命名空间注册)\r \t\t|-- pages\r \t\t|-- utils\r \t  |-- project                              (子项目目录)\r \t  |-- demo\r \t    |-- entry\r \t\t  |-- index.js                         (入口文件)\r \t\t|-- modules\r \t\t  |-- assets\r \t\t  |-- provider\r \t\t    |-- http-service.js                (请求配置)\r \t\t\t|-- interface.js                   (请求接口)\r \t\t  |-- router\r \t\t    |-- index.router.js\r \t\t  |-- store\r \t\t    |-- index.store.js                 (严格模式)\r \t\t\t|-- loginStore.js\r \t\t  |-- utils\r \t\t|-- views\r \t\t  |-- components\r \t\t  |-- app.vue\r \t\t  |-- index.vue\r \t  |-- projectA                             (目录结构同上)\r \t|-- .babelrc                               (babel配置)\r \t|-- postcss.config.js                      (postcss配置)\r \t|-- command.js                             (项目启动脚本)\r \t|-- tsconfig.json                          (ts配置文件)  \r \t|-- package.json\r \t|-- package-lock.json\r \t|-- readme.md                              (项目构建文档)  \r \t|-- README.md                              (项目使用文档)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mr-co-idea/H5.git"
+  },
+  "author": "Coles",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mr-co-idea/H5/issues"
+  },
+  "homepage": "https://github.com/mr-co-idea/H5#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/helper-module-imports": "^7.12.5",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "autoprefixer": "^10.0.2",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
+    "babel-loader": "^8.2.1",
+    "babel-plugin-import": "^1.13.1",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "chalk": "^4.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^5.0.1",
+    "html-webpack-plugin": "^4.5.0",
+    "inquirer": "^7.3.3",
+    "less": "^3.12.2",
+    "less-loader": "^7.1.0",
+    "mini-css-extract-plugin": "^1.3.0",
+    "node-sass": "^5.0.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "postcss": "^8.1.7",
+    "postcss-load-config": "^3.0.0",
+    "postcss-loader": "^4.0.4",
+    "postcss-pxtorem": "^5.1.1",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.0.5",
+    "url-loader": "^4.1.1",
+    "vconsole-webpack-plugin": "^1.5.2",
+    "vue-loader": "^15.9.5",
+    "vue-template-compiler": "^2.6.12",
+    "vue-tsx-support": "^3.0.2",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.3.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "vant": "^2.10.13",
+    "vue": "^2.6.12",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.0.2",
+    "vue-router": "^3.4.9",
+    "vuex": "^3.5.1"
+  }
+}
