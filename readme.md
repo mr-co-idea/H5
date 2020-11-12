@@ -26,7 +26,7 @@
     |-- dist                                   (打包输出目录)
 	|-- public
 	  |-- index.html
-	|-- serve                                  (服务：另行介绍)
+	|-- server                                 (服务：另行介绍)
 	|-- src                                    (开发目录)
 	  |-- common                               (公共资源目录)
 	    |-- assets                             (静态资源)
