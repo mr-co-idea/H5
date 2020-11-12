@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"jsx": "preserve",
+		"jsxFactory": "VueTsxSupport",
+		"target": "ES6",
+		"outDir": "./dist/",
+		"sourceMap": true,
+		"experimentalDecorators": true,
+		"moduleResolution": "node"
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+	],
+	"exclude": [
+		"node_modules"
+	]
+}

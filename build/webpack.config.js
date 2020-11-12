@@ -17,9 +17,9 @@ module.exports = env => {
 		config_dev = Object.assign({ project: project }, config.development),
 		config_prod = Object.assign({ project: project }, config.production);
 
-	if (mode === 'development') {
+	if (mode.indexOf('development') != -1) {
 		return merge(common(config_base), development(config_dev), { mode })
-	} else {
+	} else if (mode.indexOf('production') != -1) {
 		return merge(common(config_base), product(config_prod), { mode })
 	}
 }
