@@ -11,9 +11,9 @@ const _params_project = process.argv[3];//名称
 let _cmd;
 //指令
 if (_params_env.indexOf('dev' || 'Dev') != -1) {
-	_cmd = `cross-env project= webpack-dev-server --hot --open --env.NODE_ENV=${_params_env === 'dev' ? development : _params_env} --config build/webpack.config.js --color`;
+	_cmd = `cross-env project= webpack-dev-server --hot --open --env.NODE_ENV=${_params_env === 'dev' ? 'development' : _params_env} --config build/webpack.config.js --color`;
 } else if (_params_env.indexOf('build' || 'Build') != -1) {
-	_cmd = `cross - env project = webpack--env.NODE_ENV =${_params_env === 'build' ? development : _params_env}  --config build / webpack.config.js--color`;
+	_cmd = `cross-env project= webpack --env.NODE_ENV=${_params_env === 'build' ? 'development' : _params_env} --config build/webpack.config.js --color`;
 };
 
 /**
@@ -33,10 +33,10 @@ const readDir = () => {
  */
 const runCmd = (_cmd, _project, _env) => {
 	const _list = _cmd.split("project=");
-	const _cmd_run = _list[0] + `project = ${_project} ` + _list[1];
+	const _cmd_run = _list[0] + `project=${_project} ` + _list[1];
 
 	const workerProcess = exec(_cmd_run, function (error, stdout, stderr) {
-
+		console.info(chalk.red(error))
 	});
 	workerProcess.stdout.on('data', function (data) {
 		console.log(data);
@@ -58,8 +58,8 @@ const runProject = (_cmd, _project, _env) => {
 	if (_project) {
 		const dirList = readDir();
 		if (dirList.indexOf(_project) < 0) {
-			console.info(chalk`[rgb(255,0,0) 项目启动失败]`);
-			console.info(chalk`[rgb(255,0,0) error：请检查项目名是否输入错误或子项目目录是否存在`);
+			console.info(chalk.red('项目启动失败'));
+			console.info(chalk.red('error：请检查项目名是否输入错误或子项目目录是否存在'));
 		} else {
 			runCmd(_cmd, _project, _env);
 		}
@@ -83,14 +83,14 @@ const runProject = (_cmd, _project, _env) => {
 const createAsk = (ask, en) => {
 	inquirer.prompt(ask).then(answers => {
 		const CN = answers.CN;
-		const EN = answers.EN;
+		const EN = en || answers.EN;
 
-		const workerProcess = exec('node ./build/config/node.create ' + EN + ' ' + CN, function (error, stdout, stderr) {
+		const workerProcess = exec('node ./build/config/create ' + EN + ' ' + CN, function (error, stdout, stderr) {
 			if (error) {
-				console.info(chalk`[rgb(255,0,0) 创建失败!]`);
+				console.info(chalk.red('创建失败!'));
 				throw error;
 			} else {
-				console.info(chalk`[rgb(0,255,0) 创建完毕!]`);
+				console.info(chalk.green(CN + '创建完毕!'));
 			}
 		});
 		workerProcess.stdout.on('data', function (data) {

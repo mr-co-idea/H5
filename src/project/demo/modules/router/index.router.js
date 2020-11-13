@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import index from '@views/index.vue'
 
 Vue.use(VueRouter)
+
 const routes = [
 	{
 		name: 'index',
 		path: '/',
-		component: import('@views/index'),
+		component: index,
 		meta: {
 			title: 'index',
 			requireAuth: true,

@@ -36,7 +36,7 @@ module.exports = config => {
 		path.join(__dirname, `../../src/project/${$.project}`)
 	];
 	const exclude = [
-		path.join(__dirname, '/node_modules')
+		path.join(__dirname, '../../node_modules')
 	];
 
 	return {

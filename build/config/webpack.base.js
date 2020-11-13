@@ -21,14 +21,14 @@ module.exports = config => {
 	];
 
 	//test环境下添加手机调试工具
-	$.mode.indexof('Test') != -1 ? _plugins.push(new VConsole({ enable: true })) : null;
+	$.mode.indexOf('test') != -1 ? _plugins.push(new VConsole({ enable: true })) : null;
 
 	const include = [
 		path.join(__dirname, `../../src/common`),
 		path.join(__dirname, `../../src/project/${$.project}`)
 	];
 	const exclude = [
-		path.join(__dirname, '/node_modules')
+		path.join(__dirname, '../../node_modules')
 	];
 
 	return {
@@ -36,7 +36,7 @@ module.exports = config => {
 			main: `./src/project/${$.project}/entry/index.js`
 		},//入口文件
 		output: {
-			filename: 'js/[name].[contenthash:5].js',
+			filename: 'js/[name].[hash:5].js',
 			path: path.resolve(__dirname, `../../../dist/${$.project + '/' + $.outPath}`),
 		},
 		module: {
@@ -69,19 +69,35 @@ module.exports = config => {
 				//解析vue文件
 				{
 					test: /\.vue$/,
-					loader: 'vue-loader',
+					use: [
+						'vue-loader'
+					],
 					include: [
 						...include,
 						...exclude
 					]
 				},
+				//解析资源
+				{
+					test: /\.(jpg|png|gif|jpeg)$/,
+					use: [
+						{
+							loader: 'url-loader',
+							options: {
+								esModule: false,
+								limit: 50000
+							}
+						}
+					],
+					include: include,
+					exclude: exclude
+				}
 			]
 		},
 		resolve: {
 			extensions: ['.js', '.vue', '.json', '.jsx', '.ts', '.tsx'],
 			alias: {
 				"@common": path.join(__dirname, '../../src/common'),
-				"@resources": path.join(__dirname, '../../src/common/resources'),
 				"@rules": path.join(__dirname, '../../src/common/components/cpt_form/rules'),//form组件配置
 				"@images": path.join(__dirname, '../../src/common/assets/images'),
 				"@project": path.join(__dirname, `../../src/project/${$.project}`),

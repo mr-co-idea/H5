@@ -1,0 +1,27 @@
+{
+	"presets": [
+		[
+			"@babel/preset-env",
+			{
+				"targets": {
+					"browsers": [
+						"defaults"
+					]
+				}
+			},
+			"env"
+		]
+	],
+	"plugins": [
+		[
+			"import",
+			{
+				"libraryName": "vant",
+				"libraryDirectory": "es",
+				"style": true
+			}
+		],
+		"transform-vue-jsx",
+		"@babel/plugin-transform-runtime"
+	]
+}

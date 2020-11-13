@@ -12,7 +12,8 @@ module.exports = env => {
 	const config = readJson(project);
 
 	const config_base = Object.assign({
-		project: project
+		project: project,
+		mode
 	}, config.base),
 		config_dev = Object.assign({ project: project }, config.development),
 		config_prod = Object.assign({ project: project }, config.production);

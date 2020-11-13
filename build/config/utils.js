@@ -1,4 +1,5 @@
 const fs = require('fs'),
+	path = require('path'),
 	chalk = require('chalk');
 
 /**
@@ -14,7 +15,7 @@ const readJson = (project) => {
 		});
 	} catch (e) {
 		console.info(e);
-		console.info(chalk`[rgb(255,0,0) 读取配置文件失败，采用默认配置]`);
+		console.info(chalk.red('读取配置文件失败，采用默认配置'));
 	}
 
 	return Object.assign({}, JSON.parse(data));
@@ -46,7 +47,7 @@ const processEnv = (env) => {
  * @param {*} dst 
  */
 const copy = (src, dst) => {
-	const paths = fs.readFileSync(src);
+	const path = fs.readdirSync(src);
 	path.forEach(e => {
 		const src_final = src + '/' + e;
 		const dst_final = dst + '/' + e;
@@ -57,7 +58,7 @@ const copy = (src, dst) => {
 				let writeable = fs.createWriteStream(dst_final);
 				readable.pipe(writeable);
 			} else if (stats.isDirectory()) {
-				checkDirectory(src_final, dst_finalf);
+				checkDirectory(src_final, dst_final, copy);
 			}
 		})
 	})
@@ -81,11 +82,11 @@ const checkDirectory = (src, dst, callback) => {
  */
 const createJson = (EN, CN) => {
 	const file = path.join(__dirname, `../project/${EN}.json`);
-	const content = JSON.parse(fs.readdirSync(path.join(__dirname, '../project/demo.json'), { encoding: 'utf-8' }));
+	const content = JSON.parse(fs.readFileSync(path.join(__dirname, '../project/demo.json'), { encoding: 'utf-8' }));
 	content.base.name = CN;
 	fs.writeFile(file, JSON.stringify(content), err => {
 		if (err) throw err;
-		console.info(chalk`[rgb(0,255,0) 配置文件创建成功！]`)
+		console.info(chalk.green('配置文件创建成功！'))
 	})
 }
 

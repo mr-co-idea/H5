@@ -1,23 +1,23 @@
 # 单工程多项目 —— H5版（for Vue）
 
-##### 单工程下，多个子项目，子项目相互独立，可共用工程的配置和common下的资源
-##### 适用于结构相仿，代码耦合性高的快速开发型H5项目
+* 单工程下，多个子项目，子项目相互独立，可共用工程的配置和common下的资源
+* 适用于结构相仿，代码耦合性高的快速开发型H5项目
 ***
-### 技术指南
-* webpack4/5 + vue2 + vant
+### 一、技术指南
+* webpack4.x + vue2.x + vant
 * babel7 + postcss8
-* inquirer
+* child_process +  inquirer
 * sass + less (可选)
 * jsx + ts (可选)
-### 工程
-#### 目录结构
+### 二、工程
+#### A.目录结构
     |-- build
       |-- config
         |-- webpack.base.js                    (公共配置)
         |-- webpack.dev.js                     (development环境配置)
         |-- webpack.prod.js                    (production环境配置)
         |-- create.js                          (创建新的子项目脚本)
-    	|-- utils.js                           (工具)
+    	  |-- utils.js                           (工具)
       |-- project                              (子项目配置)
         |-- demo.json                          (子项目配置文件)
     	|-- projectA.json
@@ -30,35 +30,40 @@
     |-- src                                    (开发目录)
       |-- common                               (公共资源目录)
         |-- assets                             (静态资源)
-    	|-- components                         (公共组件)
-    	  |-- cpt_form                         (form组件,另行说明)
-    	  |-- othens...
-    	  |-- index.cpt.js                     (组件注册)
-    	|-- resources
-    	  |-- providers                        (网络请求)
-    	    |-- http-service.base.js           
-    	  |-- stores                           (store，在子项目引入，并通过命名空间注册)
-    	|-- pages
-    	|-- utils
-      |-- project                              (子项目目录)
-      |-- demo
-        |-- entry
-    	  |-- index.js                         (入口文件)
+    	  |-- components                         (公共组件)
+    	    |-- cpt_form                         (form组件,另行说明)
+    	    |-- cpt_demo
+            |-- cpt-demo.vue
+            |-- cpt-demojsx.jsx                (组件jsx写法)
+            |-- cpt-demotsx1.tsx               (组件tsx官方库写法)
+            |-- cpt-demotsx2.tsx               (组件tsx社区写法，基于官方库)
+    	    |-- othens...
+    	    |-- index.cpt.js                     (组件注册)
     	|-- modules
-    	  |-- assets
-    	  |-- providers
-    	    |-- http-service.js                (请求配置)
-    		|-- interface.js                   (请求接口)
-    	  |-- router
-    	    |-- index.router.js
-    	  |-- store
-    	    |-- index.store.js                 (严格模式)
-    		|-- loginStore.js
+    	  |-- providers                          (网络请求)
+    	    |-- http-service.base.js           
+    	  |-- stores                             (store，在子项目引入，并通过命名空间注册)
+    	  |-- pages
     	  |-- utils
-    	|-- views
-    	  |-- components
-    	  |-- app.vue
-    	  |-- index.vue
+      |-- project                              (子项目目录)
+        |-- demo
+          |-- entry
+    	    |-- index.js                         (入口文件)
+    	  |-- modules
+    	    |-- assets
+    	    |-- providers
+    	      |-- http-service.js                (请求配置)
+    		  |-- interface.js                     (请求接口)
+    	    |-- router
+    	      |-- index.router.js
+    	    |-- store
+    	      |-- index.store.js                 (严格模式)
+    		  |-- loginStore.js
+    	    |-- utils
+    	 |-- views
+    	   |-- components
+    	   |-- app.vue
+    	   |-- index.vue
       |-- projectA                             (目录结构同上)
     |-- .babelrc                               (babel配置)
     |-- postcss.config.js                      (postcss配置)
@@ -69,11 +74,11 @@
     |-- readme.md                              (项目构建文档)  
     |-- README.md                              (项目使用文档)             
 
-#### 工程搭建
-1. 创建目录结构
-2. 创建项目：`npm init`
-3. 安装依赖：
-> - webpack
+#### B.工程搭建
+##### 1. 创建目录结构
+##### 2. 创建项目：`npm init`
+##### 3. 安装依赖：
+> - webpack（4.x版本需要安装webpack-cli）
 >> ``` 
 >> npm install webpack webpack-cli webpack-dev-server webpack-merge -D
 >> ```
@@ -131,10 +136,11 @@
 >> ```
 >> npm install vue-class-component vue-property-decorator -S
 >> ```
-4. 配置工程：
+##### 4. 配置工程：
 > * **config/utils.js**
 > >```
 > >const fs = require('fs'),
+> >	path = require('path'),
 > >	chalk = require('chalk');
 > >
 > >/**
@@ -150,7 +156,7 @@
 > >		});
 > >	} catch (e) {
 > >		console.info(e);
-> >		console.info(chalk`[rgb(255,0,0) 读取配置文件失败，采用默认配置]`);
+> >		console.info(chalk.red('读取配置文件失败，采用默认配置'));
 > >	}
 > >
 > >	return Object.assign({}, JSON.parse(data));
@@ -182,7 +188,7 @@
 > > * @param {*} dst 
 > > */
 > >const copy = (src, dst) => {
-> >	const paths = fs.readFileSync(src);
+> >	const path = fs.readdirSync(src);
 > >	path.forEach(e => {
 > >		const src_final = src + '/' + e;
 > >		const dst_final = dst + '/' + e;
@@ -193,7 +199,7 @@
 > >				let writeable = fs.createWriteStream(dst_final);
 > >				readable.pipe(writeable);
 > >			} else if (stats.isDirectory()) {
-> >				checkDirectory(src_final, dst_finalf);
+> >				checkDirectory(src_final, dst_final, copy);
 > >			}
 > >		})
 > >	})
@@ -217,11 +223,11 @@
 > > */
 > >const createJson = (EN, CN) => {
 > >	const file = path.join(__dirname, `../project/${EN}.json`);
-> >	const content = JSON.parse(fs.readdirSync(path.join(__dirname, '../project/demo.json'), { encoding: 'utf-8' }));
+> >	const content = JSON.parse(fs.readFileSync(path.join(__dirname, '../project/demo.json'), { encoding: 'utf-8' }));
 > >	content.base.name = CN;
 > >	fs.writeFile(file, JSON.stringify(content), err => {
 > >		if (err) throw err;
-> >		console.info(chalk`[rgb(0,255,0) 配置文件创建成功！]`)
+> >		console.info(chalk.green('配置文件创建成功！'))
 > >	})
 > >}
 > >
@@ -258,7 +264,8 @@
 > >	const config = readJson(project);
 > >
 > >	const config_base = Object.assign({
-> >		project: project
+> >		project: project,
+> >		mode
 > >	}, config.base),
 > >		config_dev = Object.assign({ project: project }, config.development),
 > >		config_prod = Object.assign({ project: project }, config.production);
@@ -295,14 +302,14 @@
 > >	];
 > >
 > >	//test环境下添加手机调试工具
-> >	$.mode.indexof('Test') != -1 ? _plugins.push(new VConsole({ enable: true })) : null;
+> >	$.mode.indexOf('test') != -1 ? _plugins.push(new VConsole({ enable: true })) : null;
 > >
 > >	const include = [
 > >		path.join(__dirname, `../../src/common`),
 > >		path.join(__dirname, `../../src/project/${$.project}`)
 > >	];
 > >	const exclude = [
-> >		path.join(__dirname, '/node_modules')
+> >		path.join(__dirname, '../../node_modules')
 > >	];
 > >
 > >	return {
@@ -310,7 +317,7 @@
 > >			main: `./src/project/${$.project}/entry/index.js`
 > >		},//入口文件
 > >		output: {
-> >			filename: 'js/[name].[contenthash:5].js',
+> >			filename: 'js/[name].[hash:5].js',
 > >			path: path.resolve(__dirname, `../../../dist/${$.project + '/' + $.outPath}`),
 > >		},
 > >		module: {
@@ -343,19 +350,35 @@
 > >				//解析vue文件
 > >				{
 > >					test: /\.vue$/,
-> >					loader: 'vue-loader',
+> >					use: [
+> >						'vue-loader'
+> >					],
 > >					include: [
 > >						...include,
 > >						...exclude
 > >					]
 > >				},
+> >				//解析资源
+> >				{
+> >					test: /\.(jpg|png|gif|jpeg)$/,
+> >					use: [
+> >						{
+> >							loader: 'url-loader',
+> >							options: {
+> >								esModule: false,
+> >								limit: 50000
+> >							}
+> >						}
+> >					],
+> >					include: include,
+> >					exclude: exclude
+> >				}
 > >			]
 > >		},
 > >		resolve: {
 > >			extensions: ['.js', '.vue', '.json', '.jsx', '.ts', '.tsx'],
 > >			alias: {
 > >				"@common": path.join(__dirname, '../../src/common'),
-> >				"@resources": path.join(__dirname, '../../src/common/resources'),
 > >				"@rules": path.join(__dirname, '../../src/common/components/cpt_form/rules'),//form组件配置
 > >				"@images": path.join(__dirname, '../../src/common/assets/images'),
 > >				"@project": path.join(__dirname, `../../src/project/${$.project}`),
@@ -373,14 +396,22 @@
 > >const path = require('path'),
 > >	webpack = require('webpack'),
 > >	{ processEnv } = require('./utils'),
-> >	vconsole = require('vconsole-webpack-plugin');
+> >	{ merge } = require('webpack-merge');
 > >
 > >module.exports = config => {
 > >
-> >	const $ = Object.assign({
+> >	const publicPath = config.publicPath || '';
+> >	//如果config中没有配置，则采用下列默认配置，有的话将覆盖下列配置
+> >	const $ = merge({
+> >		env: {
+> >			'BASE_URL': '/api'
+> >		},
+> >		outPut_publicPath: publicPath ? publicPath + '/' : '',
 > >		devServer: {
 > >			contentBase: path.join(__dirname, '../public'),
 > >			open: true,
+> >			openPage: publicPath ? publicPath.split('/')[1] + '/' : '',
+> >			publicPath: publicPath + '',
 > >			port: 8080,
 > >			host: 'localhost',
 > >			disableHostCheck: true,
@@ -392,66 +423,64 @@
 > >					}
 > >				}
 > >			}
-> >		},
-> >		env: {
-> >			'BASE_URL': '/api'
 > >		}
 > >	}, config);
 > >
-> >	const $$ = $.devServer;
+> >	const include = [
+> >		path.join(__dirname, `../../src/common`),
+> >		path.join(__dirname, `../../src/project/${$.project}`)
+> >	];
+> >	const exclude = [
+> >		path.join(__dirname, '../../node_modules')
+> >	];
 > >
 > >	return {
+> >		mode: 'development',
 > >		devtool: 'inline-source-map',
+> >		output: {
+> >			publicPath: $.outPut_publicPath
+> >		},
 > >		module: {
 > >			rules: [
 > >				{
 > >					test: /\.css$/,
 > >					use: [
 > >						{ loader: 'style-loader' },
-> >						{
-> >							loader: 'css-loader'
-> >						},
-> >						{
-> >							loader: 'postcss-loader'
-> >						}
+> >						{ loader: 'css-loader' },
+> >						{ loader: 'postcss-loader' }
+> >					],
+> >					include: [
+> >						...include,
+> >						...exclude
 > >					]
 > >				},
 > >				{
 > >					test: /\.less$/,
 > >					use: [
 > >						{ loader: 'style-loader' },
-> >						{
-> >							loader: 'css-loader'
-> >						},
-> >						{
-> >							loader: 'postcss-loader'
-> >						}, {
-> >							loader: 'less-loader'
-> >						}
-> >					]
+> >						{ loader: 'css-loader' },
+> >						{ loader: 'postcss-loader' },
+> >						{ loader: 'less-loader' }
+> >					],
+> >					include: include,
+> >					exclude: exclude
 > >				},
 > >				{
 > >					test: /\.(sa|sc)ss$/,
 > >					use: [
 > >						{ loader: 'style-loader' },
-> >						{
-> >							loader: 'css-loader'
-> >						},
-> >						{
-> >							loader: 'postcss-loader'
-> >						}, {
-> >							loader: 'sass-loader'
-> >						}
-> >					]
+> >						{ loader: 'css-loader' },
+> >						{ loader: 'postcss-loader' },
+> >						{ loader: 'sass-loader' }
+> >					],
+> >					include: include,
+> >					exclude: exclude
 > >				}
 > >			]
 > >		},
 > >		devServer: $.devServer,
 > >		plugins: [
 > >			new webpack.DefinePlugin(processEnv($.env)),
-> >			new vconsole({
-> >				enable: true
-> >			})
 > >		]
 > >	};
 > >}
@@ -478,7 +507,7 @@
 > >		path.join(__dirname, `../../src/project/${$.project}`)
 > >	];
 > >	const exclude = [
-> >		path.join(__dirname, '/node_modules')
+> >		path.join(__dirname, '../../node_modules')
 > >	];
 > >
 > >	return {
@@ -537,7 +566,7 @@
 > >		plugins: [
 > >			new CleanWebpackPlugin(),
 > >			new MiniCssExtractPlugin({
-> >				filename: 'css/[name].[contenthash:5].css'
+> >				filename: 'css/[name].[hash:5].css'
 > >			}),
 > >			new OptimizeCSSAssetsPlugin(),
 > >			new webpack.DefinePlugin(processEnv($.env))
@@ -575,9 +604,9 @@
 > >let _cmd;
 > >//指令
 > >if (_params_env.indexOf('dev' || 'Dev') != -1) {
-> >	_cmd = `cross-env project= webpack-dev-server --hot --open --env.NODE_ENV=${_params_env === 'dev' ? development : _params_env} --config build/webpack.config.js --color`;
+> >	_cmd = `cross-env project= webpack-dev-server --hot --open --env.NODE_ENV=${_params_env === 'dev' ? 'development' : _params_env} --config build/webpack.config.js --color`;
 > >} else if (_params_env.indexOf('build' || 'Build') != -1) {
-> >	_cmd = `cross - env project = webpack--env.NODE_ENV =${_params_env === 'build' ? development : _params_env}  --config build / webpack.config.js--color`;
+> >	_cmd = `cross-env project= webpack --env.NODE_ENV=${_params_env === 'build' ? 'development' : _params_env} --config build/webpack.config.js --color`;
 > >};
 > >
 > >/**
@@ -597,10 +626,10 @@
 > > */
 > >const runCmd = (_cmd, _project, _env) => {
 > >	const _list = _cmd.split("project=");
-> >	const _cmd_run = _list[0] + `project = ${_project} ` + _list[1];
+> >	const _cmd_run = _list[0] + `project=${_project} ` + _list[1];
 > >
 > >	const workerProcess = exec(_cmd_run, function (error, stdout, stderr) {
-> >
+> >		console.info(chalk.red(error))
 > >	});
 > >	workerProcess.stdout.on('data', function (data) {
 > >		console.log(data);
@@ -622,8 +651,8 @@
 > >	if (_project) {
 > >		const dirList = readDir();
 > >		if (dirList.indexOf(_project) < 0) {
-> >			console.info(chalk`[rgb(255,0,0) 项目启动失败]`);
-> >			console.info(chalk`[rgb(255,0,0) error：请检查项目名是否输入错误或子项目目录是否存在`);
+> >			console.info(chalk.red('项目启动失败'));
+> >			console.info(chalk.red('error：请检查项目名是否输入错误或子项目目录是否存在'));
 > >		} else {
 > >			runCmd(_cmd, _project, _env);
 > >		}
@@ -647,14 +676,14 @@
 > >const createAsk = (ask, en) => {
 > >	inquirer.prompt(ask).then(answers => {
 > >		const CN = answers.CN;
-> >		const EN = answers.EN;
+> >		const EN = en || answers.EN;
 > >
-> >		const workerProcess = exec('node ./build/config/node.create ' + EN + ' ' + CN, function (error, stdout, stderr) {
+> >		const workerProcess = exec('node ./build/config/create ' + EN + ' ' + CN, function (error, stdout, stderr) {
 > >			if (error) {
-> >				console.info(chalk`[rgb(255,0,0) 创建失败!]`);
+> >				console.info(chalk.red('创建失败!'));
 > >				throw error;
 > >			} else {
-> >				console.info(chalk`[rgb(0,255,0) 创建完毕!]`);
+> >				console.info(chalk.green(CN + '创建完毕!'));
 > >			}
 > >		});
 > >		workerProcess.stdout.on('data', function (data) {
@@ -765,6 +794,22 @@
 > >	"testBuild": {}
 > >}
 > >```
+> * **public/index.html**
+> > ```
+> > <!DOCTYPE html>
+> > <html>
+> > 
+> > <head>
+> >   <meta charset="utf-8" />
+> >   <title><%= htmlWebpackPlugin.options.title %></title>
+> > </head>
+> > 
+> > <body>
+> >   <div id="app"></div>
+> > </body>
+> > 
+> > </html>
+> > ```
 > * **tsconfig.json**（可选）
 > >```
 > >{
@@ -787,18 +832,127 @@
 > >	]
 > >}
 > >```
-5. 配置项目：
+##### 5. 配置项目：
 * 公共部分
-> * **tsconfig.json**
-> >
-> * **tsconfig.json**
-> >
+> * **resources**
+> > - **providers/http-service.base.js**
+> > > ```
+> > > const qs = require('qs');
+> > > 
+> > > const createRequest = (baseURL, req, res) => {
+> > > 
+> > > 	const request = import('axios')({
+> > > 		baseURL: baseURL ? baseURL : '',
+> > > 		timeout: 60000,
+> > > 	});
+> > > 
+> > > 	req ? req(request) : request.interceptors.request.use(config => {
+> > > 		if (config.method === 'post') {
+> > > 			config.data = qs.stringify(config.data);
+> > > 		};
+> > > 		return config
+> > > 	}, error => {
+> > > 		return Promise.reject(error)
+> > > 	});
+> > > 
+> > > 	res ? res(request) : request.interceptors.response.use(response => response.data, error => {
+> > > 
+> > > 		if (error && error.response) {
+> > > 			switch (error.response.status) {
+> > > 				case 400:
+> > > 					console.log('错误请求')
+> > > 					break;
+> > > 				case 401:
+> > > 					console.log('未授权请重新登录')
+> > > 					break;
+> > > 				case 403:
+> > > 					console.log('拒绝访问')
+> > > 					break;
+> > > 				case 404:
+> > > 					console.log('请求错误，未找到该资源')
+> > > 					break;
+> > > 				case 405:
+> > > 					console.log('请求方法未允许')
+> > > 					break;
+> > > 				case 408:
+> > > 					console.log('请求超时')
+> > > 					break;
+> > > 				case 500:
+> > > 					console.log('服务器出错')
+> > > 					break;
+> > > 				case 501:
+> > > 					console.log('网络未实现')
+> > > 					break;
+> > > 				case 502:
+> > > 					console.log('网络错误')
+> > > 					break;
+> > > 				case 503:
+> > > 					console.log('服务不可用')
+> > > 					break;
+> > > 				case 504:
+> > > 					console.log('网络超时')
+> > > 					break;
+> > > 				case 505:
+> > > 					console.log('http版本不支持该请求')
+> > > 					break;
+> > > 				default:
+> > > 					console.log(`链接出错${error.response.status}`)
+> > > 					break;
+> > > 			}
+> > > 		}
+> > > 		return Promise.reject(error.response)
+> > > 	});
+> > > 
+> > > 	return request
+> > > };
+> > > 
+> > > export default createRequest
+> > > ```
+> * **components**
+> > - **index.cpt.js**
+> > > ```
+> > > import cpt_form from './cpt_form/cpt-form';
+> > > import cpt_demo from './cpt_demo/cpt-demo.vue';
+> > > import cpt_demojsx from './cpt_demo/cpt-demo.jsx';
+> > > import cpt_demotsx_one from './cpt_demo/cpt-demo1.tsx';
+> > > import cpt_demotsx_two from './cpt_demo/cpt-demo2.tsx';
+> > > 
+> > > const map = new Map([
+> > > 	["cpt-form", cpt_form],
+> > > 	["cpt-demo", cpt_demo],
+> > > 	["cpt-demo-jsx", cpt_demojsx],
+> > > 	["cpt-demotsx-one", cpt_demotsx_one],
+> > > 	["cpt-demotsx-two", cpt_demotsx_two],
+> > > ])
+> > > 
+> > > const createPlugins = (...cptName) => {
+> > > 
+> > > 	function plugins(Vue) {
+> > > 		for (let item of cptName) {
+> > > 			/^cpt-/.test(item) ? item : (item = 'cpt-' + item);
+> > > 			Vue.component(item, map.get(item))
+> > > 		}
+> > > 	};
+> > > 
+> > > 	return plugins;
+> > > }
+> > > 
+> > > export default createPlugins
+> > > ```
+> > - **cpt_form**
+> > >
+> > > ```
+> > > 详情，见form组件文档
+> > > ```
+
 * 子项目
 > * **entry/index.js**
 > >```
 > >import Vue from 'vue';
 > >import router from '@modules/router/index.router';
 > >import store from '@modules/store/index.store'
+> >
+> >import App from '@views/app.vue'
 > >
 > >import 'amfe-flexible';
 > >import 'vant/lib/icon/local.css'
@@ -819,7 +973,7 @@
 > * **modules**
 > > - **providers/http-service.js**
 > > > ```
-> > > import createRequest from `@resources/providers/http-service.base`
+> > > import createRequest from `@common/modules/providers/http-service.base`
 > > > 
 > > > const request = createRequest(process.env.BASE_URL)
 > > > 
@@ -841,13 +995,15 @@
 > > > ```
 > > > import Vue from 'vue'
 > > > import VueRouter from 'vue-router'
+> > > import index from '@views/index.vue'
 > > > 
 > > > Vue.use(VueRouter)
+> > > 
 > > > const routes = [
 > > > 	{
 > > > 		name: 'index',
 > > > 		path: '/',
-> > > 		component: import('@views/index'),
+> > > 		component: index,
 > > > 		meta: {
 > > > 			title: 'index',
 > > > 			requireAuth: true,
@@ -915,12 +1071,10 @@
 > > > ```
 > > > import createPlugins from '@common/components/index.cpt'
 > > > 
-> > > const commonPlugins = createPlugins('cpt-one', 'two');
-> > > 
-> > > import cpt from './cpt'
+> > > const commonPlugins = createPlugins('cpt-form', 'demo');
 > > > 
 > > > const plugins = (Vue) => {
-> > > 	Vue.component('cpt', cpt);
+> > > 	Vue.component('cpt', import('./cpt'));
 > > > }
 > > > 
 > > > export {
@@ -930,7 +1084,7 @@
 > > > ```
 > > - **components/cpt.vue**
 > > > ```
-> > > 
+> > > 参考common下的组件
 > > > ```
 > > - **app.vue**
 > > > ```
@@ -947,7 +1101,18 @@
 > > > ```
 > > > 
 > > > ```
-
+##### 6. 添加指令：
+> **package.json**
+> > ```
+> > 
+> >   "scripts": {
+> >     "dev": "node ./command dev",
+> >     "build": "node ./command build",
+> >     "testDev": "node ./command testDev",
+> >     "testBuild": "node ./command testBuild",
+> >     "create": "node ./command create"
+> >   },
+> > ```
 
 
 ### 待增加
@@ -955,7 +1120,14 @@
 * tree-shaking配置
 * jest
 * eslint
+### 计划迭代
+* vue3 + vite + rollup 构建
 ### 补充说明
+
+#### 版本
+
+- 若想使用webpack5.x,需使用vue3+vue-loader16版本
+
 #### GUI
 * 采用vite + vue3 + antd + rollup + koa 进行构建
 * 可以通过UI进行项目启动、项目管理、项目文档管理查看等

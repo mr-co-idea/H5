@@ -18,7 +18,7 @@ module.exports = config => {
 		path.join(__dirname, `../../src/project/${$.project}`)
 	];
 	const exclude = [
-		path.join(__dirname, '/node_modules')
+		path.join(__dirname, '../../node_modules')
 	];
 
 	return {
@@ -77,7 +77,7 @@ module.exports = config => {
 		plugins: [
 			new CleanWebpackPlugin(),
 			new MiniCssExtractPlugin({
-				filename: 'css/[name].[contenthash:5].css'
+				filename: 'css/[name].[hash:5].css'
 			}),
 			new OptimizeCSSAssetsPlugin(),
 			new webpack.DefinePlugin(processEnv($.env))
