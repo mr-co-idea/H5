@@ -81,6 +81,7 @@ module.exports = config => {
 			extensions: ['.js', '.vue', '.json', '.jsx', '.ts', '.tsx'],
 			alias: {
 				"@common": path.join(__dirname, '../../src/common'),
+				"@resources": path.join(__dirname, '../../src/common/resources'),
 				"@rules": path.join(__dirname, '../../src/common/components/cpt_form/rules'),//form组件配置
 				"@images": path.join(__dirname, '../../src/common/assets/images'),
 				"@project": path.join(__dirname, `../../src/project/${$.project}`),

@@ -34,7 +34,7 @@
     	  |-- cpt_form                         (form组件,另行说明)
     	  |-- othens...
     	  |-- index.cpt.js                     (组件注册)
-    	|-- modules
+    	|-- resources
     	  |-- providers                        (网络请求)
     	    |-- http-service.base.js           
     	  |-- stores                           (store，在子项目引入，并通过命名空间注册)
@@ -110,7 +110,7 @@
 >> ```
 > - H5适配
 >> ```
->> npm install autoprefixer postcss-pxtorem -D
+>> npm install autoprefixer postcss-pxtorem amfe-flexible -D
 >> ```
 > - less + sass (可选)
 >> ```
@@ -131,7 +131,7 @@
 >> ```
 >> npm install vue-class-component vue-property-decorator -S
 >> ```
-4. 配置webpack：
+4. 配置工程：
 > * **config/utils.js**
 > >```
 > >const fs = require('fs'),
@@ -355,6 +355,7 @@
 > >			extensions: ['.js', '.vue', '.json', '.jsx', '.ts', '.tsx'],
 > >			alias: {
 > >				"@common": path.join(__dirname, '../../src/common'),
+> >				"@resources": path.join(__dirname, '../../src/common/resources'),
 > >				"@rules": path.join(__dirname, '../../src/common/components/cpt_form/rules'),//form组件配置
 > >				"@images": path.join(__dirname, '../../src/common/assets/images'),
 > >				"@project": path.join(__dirname, `../../src/project/${$.project}`),
@@ -558,10 +559,399 @@
 > >
 > >checkDirectory(path.join(__dirname, dir), path.join(__dirname, '../../src/project/' + _project_EN), copy);
 > >createJson(_project_EN, _project_CN);
-> >copyDir(_project_EN);
 > >```
+> * **command.js**
+> >```
+> >//命令脚本
+> >const { exec } = require('child_process'),
+> >	fs = require('fs'),
+> >	inquirer = require('inquirer'),
+> >	chalk = require('chalk');
+> >
+> >//命令行参数
+> >const _params_env = process.argv[2];//环境
+> >const _params_project = process.argv[3];//名称
+> >
+> >let _cmd;
+> >//指令
+> >if (_params_env.indexOf('dev' || 'Dev') != -1) {
+> >	_cmd = `cross-env project= webpack-dev-server --hot --open --env.NODE_ENV=${_params_env === 'dev' ? development : _params_env} --config build/webpack.config.js --color`;
+> >} else if (_params_env.indexOf('build' || 'Build') != -1) {
+> >	_cmd = `cross - env project = webpack--env.NODE_ENV =${_params_env === 'build' ? development : _params_env}  --config build / webpack.config.js--color`;
+> >};
+> >
+> >/**
+> > * 读取目录项目
+> > * @returns {Array<String>} files
+> > */
+> >const readDir = () => {
+> >	const files = fs.readdirSync('./src/project/')
+> >	return files;
+> >}
+> >
+> >/**
+> > * 终端中输入命令
+> > * @param {String} _cmd 
+> > * @param {String} _project 
+> > * @param {String} _env 
+> > */
+> >const runCmd = (_cmd, _project, _env) => {
+> >	const _list = _cmd.split("project=");
+> >	const _cmd_run = _list[0] + `project = ${_project} ` + _list[1];
+> >
+> >	const workerProcess = exec(_cmd_run, function (error, stdout, stderr) {
+> >
+> >	});
+> >	workerProcess.stdout.on('data', function (data) {
+> >		console.log(data);
+> >	});
+> >
+> >	workerProcess.stderr.on('data', function (data) {
+> >		console.log('stderr: ' + data);
+> >	});
+> >}
+> >
+> >/**
+> > * 启动项目
+> > * @param {String} _cmd 
+> > * @param {String} _project 
+> > * @param {String} _env 
+> > */
+> >const runProject = (_cmd, _project, _env) => {
+> >	const msg = _env.indexOf('production' || 'Build') === -1 ? '请选择要启动项目' : '请选择要打包项目';
+> >	if (_project) {
+> >		const dirList = readDir();
+> >		if (dirList.indexOf(_project) < 0) {
+> >			console.info(chalk`[rgb(255,0,0) 项目启动失败]`);
+> >			console.info(chalk`[rgb(255,0,0) error：请检查项目名是否输入错误或子项目目录是否存在`);
+> >		} else {
+> >			runCmd(_cmd, _project, _env);
+> >		}
+> >	} else {
+> >		let dirList = readDir();
+> >		dirList.push('取消');
+> >		inquirer.prompt(
+> >			{
+> >				type: 'list',
+> >				name: 'project',
+> >				message: msg,
+> >				choices: dirList, // 可选选项
+> >				default: 'demo'
+> >			}).then(answers => {
+> >				if (answers.project === "取消") return;
+> >				runCmd(_cmd, answers.project, _env)
+> >			});
+> >	}
+> >};
+> >
+> >const createAsk = (ask, en) => {
+> >	inquirer.prompt(ask).then(answers => {
+> >		const CN = answers.CN;
+> >		const EN = answers.EN;
+> >
+> >		const workerProcess = exec('node ./build/config/node.create ' + EN + ' ' + CN, function (error, stdout, stderr) {
+> >			if (error) {
+> >				console.info(chalk`[rgb(255,0,0) 创建失败!]`);
+> >				throw error;
+> >			} else {
+> >				console.info(chalk`[rgb(0,255,0) 创建完毕!]`);
+> >			}
+> >		});
+> >		workerProcess.stdout.on('data', function (data) {
+> >			console.info('stdout：', data);
+> >		})
+> >		workerProcess.stderr.on('data', function (data) {
+> >			console.info('stderr：', data);
+> >		})
+> >	})
+> >}
+> >//运行程序
+> >if (_params_env === 'create') {
+> >	let _ask = [{
+> >		type: 'input',
+> >		name: 'CN',
+> >		message: '请输入要创建项目的中文名',
+> >		default: '项目'
+> >	}]
+> >	if (_params_project) {
+> >		createAsk(_ask, _params_project);
+> >	} else {
+> >		_ask.push({
+> >			type: 'input',
+> >			name: 'EN',
+> >			message: '请输入要创建项目的英文名',
+> >			default: 'unnamed'
+> >		});
+> >		createAsk(_ask, null)
+> >	}
+> >} else {
+> >	runProject(_cmd, _params_project, _params_env);
+> >}
+> >```
+> * **.babelrc**
+> >```
+> >{
+> >	"presets": [
+> >		[
+> >			"@babel/preset-env",
+> >			{
+> >				"targets": {
+> >					"browsers": [
+> >						"defaults"
+> >					]
+> >				}
+> >			},
+> >			"env"
+> >		]
+> >	],
+> >	"plugins": [
+> >		[
+> >			"import",
+> >			{
+> >				"libraryName": "vant",
+> >				"libraryDirectory": "es",
+> >				"style": true
+> >			}
+> >		],
+> >		"transform-vue-jsx",
+> >		"@babel/plugin-transform-runtime"
+> >	]
+> >}
+> >```
+> * **postcss.config.js**
+> >```
+> >module.exports = {
+> >	plugins: [
+> >		require('autoprefixer')({
+> >			overrideBrowserslist: ['Android >= 4.0', 'ios >= 8']
+> >		}),
+> >		require('postcss-pxtorem')({
+> >			rootValue: 37.5,//基于375px宽的设计图
+> >			propList: ['*']
+> >		})
+> >	]
+> >}
+> >```
+> * **build/project/demo.json**
+> >```
+> >{
+> >	"base": {
+> >		"name": "项目名称{demo}",
+> >		"outPath": "/"
+> >	},
+> >	"development": {
+> >		"env": {
+> >			"BASE_URL": "/api",
+> >			"DEMO": "...",
+> >			"others": "..."
+> >		},
+> >		"devServer": {
+> >			"open": true,
+> >			"port": 8080,
+> >			"host": "localhost",
+> >			"disableHostCheck": true,
+> >			"proxy": {
+> >				"/api": {
+> >					"target": "http://localhost:3000",
+> >					"pathRewrite": {
+> >						"^api": ""
+> >					}
+> >				}
+> >			}
+> >		}
+> >	},
+> >	"production": {},
+> >	"testDev": {},
+> >	"testBuild": {}
+> >}
+> >```
+> * **tsconfig.json**（可选）
+> >```
+> >{
+> >	"compilerOptions": {
+> >		"jsx": "preserve",
+> >		"jsxFactory": "VueTsxSupport",
+> >		"target": "ES6",
+> >		"outDir": "./dist/",
+> >		"sourceMap": true,
+> >		"experimentalDecorators": true,
+> >		"moduleResolution": "node"
+> >	},
+> >	"include": [
+> >		"src/**/*.ts",
+> >		"src/**/*.tsx",
+> >		"src/**/*.vue",
+> >	],
+> >	"exclude": [
+> >		"node_modules"
+> >	]
+> >}
+> >```
+5. 配置项目：
+* 公共部分
+> * **tsconfig.json**
+> >
+> * **tsconfig.json**
+> >
+* 子项目
+> * **entry/index.js**
+> >```
+> >import Vue from 'vue';
+> >import router from '@modules/router/index.router';
+> >import store from '@modules/store/index.store'
+> >
+> >import 'amfe-flexible';
+> >import 'vant/lib/icon/local.css'
+> >import 'vue-tsx-support/enable-check'//(可选)
+> >
+> >import { plugins, commonPlugins } from '@views/components/index'
+> >
+> >Vue.use(commonPlugins)
+> >Vue.use(plugins)
+> >
+> >new Vue({
+> >	el: '#app',
+> >	router,
+> >	store,
+> >	render: h => h(App)
+> >});
+> >```
+> * **modules**
+> > - **providers/http-service.js**
+> > > ```
+> > > import createRequest from `@resources/providers/http-service.base`
+> > > 
+> > > const request = createRequest(process.env.BASE_URL)
+> > > 
+> > > export default request
+> > > ```
+> > - **providers/interface.js**
+> > > ```
+> > > import request from './http-service'
+> > > 
+> > > export function test(params) {
+> > > 	return request({
+> > > 		url: '/test',
+> > > 		method: 'POST',
+> > > 		data: params
+> > > 	})
+> > > };
+> > > ```
+> > - **rooter/index.router.js**
+> > > ```
+> > > import Vue from 'vue'
+> > > import VueRouter from 'vue-router'
+> > > 
+> > > Vue.use(VueRouter)
+> > > const routes = [
+> > > 	{
+> > > 		name: 'index',
+> > > 		path: '/',
+> > > 		component: import('@views/index'),
+> > > 		meta: {
+> > > 			title: 'index',
+> > > 			requireAuth: true,
+> > > 			keepAlive: true
+> > > 		}
+> > > 	}
+> > > ];
+> > > 
+> > > const router = new VueRouter({
+> > > 	routes
+> > > })
+> > > 
+> > > export default router
+> > > ```
+> > - **store/index.store.js**
+> > > ```
+> > > import Vue from 'vue';
+> > > import Vuex from 'vuex';
+> > > 
+> > > Vue.use(Vuex);
+> > > 
+> > > export default new Vuex.Store({
+> > > 	state: {
+> > > 		rootVal: ''
+> > > 	},
+> > > 	getters: {
+> > > 		getRootVal(state) {
+> > > 			return state.rootVal;
+> > > 		}
+> > > 	},
+> > > 	mutations: {
+> > > 		changeRootVal(state, payload) {
+> > > 			state.rootVal = payload;
+> > > 		}
+> > > 	},
+> > > 	actions: {},
+> > > 	modules: {
+> > > 		loginStore: import('./loginStore')
+> > > 	},
+> > > 	strict: true
+> > > })
+> > > ```
+> > - **store/loginStore.js**
+> > > ```
+> > > export default {
+> > > 	namespaced: true,
+> > > 	state: {
+> > > 		content: ''
+> > > 	},
+> > > 	getters: {
+> > > 		getLoginContent(state, getters, rootVal, rootGetters) {
+> > > 			return state.content
+> > > 		}
+> > > 	},
+> > > 	mutations: {
+> > > 		changeLoginContent(state, payload) {
+> > > 			state.content = payload;
+> > > 		}
+> > > 	},
+> > > 	actions: {}
+> > > }
+> > > ```
+> * **views**
+> > - **components/index.js**
+> > > ```
+> > > import createPlugins from '@common/components/index.cpt'
+> > > 
+> > > const commonPlugins = createPlugins('cpt-one', 'two');
+> > > 
+> > > import cpt from './cpt'
+> > > 
+> > > const plugins = (Vue) => {
+> > > 	Vue.component('cpt', cpt);
+> > > }
+> > > 
+> > > export {
+> > > 	commonPlugins,
+> > > 	plugins
+> > > }
+> > > ```
+> > - **components/cpt.vue**
+> > > ```
+> > > 
+> > > ```
+> > - **app.vue**
+> > > ```
+> > > <template>
+> > >   <div id="app">
+> > >     <keep-alive>
+> > >       <router-view v-if="$route.meta.keepAlive"></router-view>
+> > >     </keep-alive>
+> > >     <router-view v-if="$route.meta.keepAlive"></router-view>
+> > >   </div>
+> > > </template>
+> > > ```
+> > - **index.vue**
+> > > ```
+> > > 
+> > > ```
+
+
 
 ### 待增加
+
 * tree-shaking配置
 * jest
 * eslint

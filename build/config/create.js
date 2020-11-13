@@ -9,4 +9,3 @@ const _project_CN = process.argv[3];
 
 checkDirectory(path.join(__dirname, dir), path.join(__dirname, '../../src/project/' + _project_EN), copy);
 createJson(_project_EN, _project_CN);
-copyDir(_project_EN);

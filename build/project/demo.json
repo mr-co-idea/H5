@@ -1,0 +1,30 @@
+{
+	"base": {
+		"name": "项目名称{demo}",
+		"outPath": "/"
+	},
+	"development": {
+		"env": {
+			"BASE_URL": "/api",
+			"DEMO": "...",
+			"others": "..."
+		},
+		"devServer": {
+			"open": true,
+			"port": 8080,
+			"host": "localhost",
+			"disableHostCheck": true,
+			"proxy": {
+				"/api": {
+					"target": "http://localhost:3000",
+					"pathRewrite": {
+						"^api": ""
+					}
+				}
+			}
+		}
+	},
+	"production": {},
+	"testDev": {},
+	"testBuild": {}
+}
