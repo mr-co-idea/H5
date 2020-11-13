@@ -39,32 +39,32 @@
             |-- cpt-demotsx2.tsx               (组件tsx社区写法，基于官方库)
     	    |-- othens...
     	    |-- index.cpt.js                     (组件注册)
-    	|-- modules
-    	  |-- providers                          (网络请求)
-    	    |-- http-service.base.js           
-    	  |-- stores                             (store，在子项目引入，并通过命名空间注册)
-    	  |-- pages
-    	  |-- utils
+    	  |-- modules
+    	    |-- providers                        (网络请求)
+    	      |-- http-service.base.js           
+    	    |-- stores                           (store，在子项目引入，并通过命名空间注册)
+    	    |-- pages
+    	    |-- utils
       |-- project                              (子项目目录)
         |-- demo
           |-- entry
-    	    |-- index.js                         (入口文件)
-    	  |-- modules
-    	    |-- assets
-    	    |-- providers
-    	      |-- http-service.js                (请求配置)
-    		  |-- interface.js                     (请求接口)
-    	    |-- router
-    	      |-- index.router.js
-    	    |-- store
-    	      |-- index.store.js                 (严格模式)
-    		  |-- loginStore.js
-    	    |-- utils
-    	 |-- views
-    	   |-- components
-    	   |-- app.vue
-    	   |-- index.vue
-      |-- projectA                             (目录结构同上)
+    	      |-- index.js                       (入口文件)
+    	    |-- modules
+    	      |-- assets
+    	      |-- providers
+    	        |-- http-service.js              (请求配置)
+    		      |-- interface.js                 (请求接口)
+    	      |-- router
+    	        |-- index.router.js
+    	      |-- store
+    	        |-- index.store.js               (严格模式)
+    		      |-- loginStore.js
+    	      |-- utils
+    	    |-- views
+    	      |-- components
+    	      |-- app.vue
+    	      |-- index.vue
+        |-- projectA                           (目录结构同上)
     |-- .babelrc                               (babel配置)
     |-- postcss.config.js                      (postcss配置)
     |-- command.js                             (项目启动脚本)
