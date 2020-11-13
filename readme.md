@@ -13,11 +13,11 @@
 #### A.目录结构
     |-- build
       |-- config
-        |-- webpack.base.js                    (公共配置)
+        |-- webpack.base.js                    (公共配置)   
         |-- webpack.dev.js                     (development环境配置)
         |-- webpack.prod.js                    (production环境配置)
         |-- create.js                          (创建新的子项目脚本)
-    	  |-- utils.js                           (工具)
+    	  |-- utils.js                         (工具)
       |-- project                              (子项目配置)
         |-- demo.json                          (子项目配置文件)
     	|-- projectA.json
@@ -30,37 +30,37 @@
     |-- src                                    (开发目录)
       |-- common                               (公共资源目录)
         |-- assets                             (静态资源)
-    	  |-- components                         (公共组件)
-    	    |-- cpt_form                         (form组件,另行说明)
-    	    |-- cpt_demo
+    	|-- components                         (公共组件)
+    	  |-- cpt_form                         (form组件,另行说明)
+    	  |-- cpt_demo
             |-- cpt-demo.vue
             |-- cpt-demojsx.jsx                (组件jsx写法)
             |-- cpt-demotsx1.tsx               (组件tsx官方库写法)
             |-- cpt-demotsx2.tsx               (组件tsx社区写法，基于官方库)
-    	    |-- othens...
-    	    |-- index.cpt.js                     (组件注册)
-    	  |-- modules
-    	    |-- providers                        (网络请求)
+    	  |-- othens...
+    	  |-- index.cpt.js                     (组件注册)
+        |-- modules
+    	    |-- providers                      (网络请求)
     	      |-- http-service.base.js           
-    	    |-- stores                           (store，在子项目引入，并通过命名空间注册)
+    	    |-- stores                         (store，在子项目引入，并通过命名空间注册)
     	    |-- pages
     	    |-- utils
       |-- project                              (子项目目录)
         |-- demo
           |-- entry
-    	      |-- index.js                       (入口文件)
-    	    |-- modules
+    	      |-- index.js                     (入口文件)
+    	  |-- modules
     	      |-- assets
     	      |-- providers
-    	        |-- http-service.js              (请求配置)
-    		      |-- interface.js                 (请求接口)
+    	        |-- http-service.js            (请求配置)
+    		    |-- interface.js               (请求接口)
     	      |-- router
     	        |-- index.router.js
     	      |-- store
-    	        |-- index.store.js               (严格模式)
-    		      |-- loginStore.js
+    	        |-- index.store.js             (严格模式)
+    		    |-- loginStore.js
     	      |-- utils
-    	    |-- views
+    	  |-- views
     	      |-- components
     	      |-- app.vue
     	      |-- index.vue
