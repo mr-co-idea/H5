@@ -34,3 +34,6 @@
 >>>baseURL: 请求地址    
 >>>req: 可覆盖request中已有的请求拦截器      
 >>>res: 可覆盖request中已有的相应拦截器
+> **4.创建公共组件**
+>> * 可以使用.vue , .jsx ,.tsx进行构建
+>> * 详见，common/components/cpt_demo中的示例
