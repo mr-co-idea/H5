@@ -17,6 +17,31 @@
           :value="value[key]"
           @input="update(key, $event)"
         />
+        <!-- 下拉框 -->
+        <cpt-select
+          v-if="item.type === 'select'"
+          :config="item"
+          :state="formEdit"
+          :value="value[key]"
+          @change="update(key, $event)"
+        />
+        <!-- 图片上传 -->
+        <cpt-load
+          v-if="item.type ? item.type.indexOf('idcard') !== -1 : false"
+          :config="item"
+          :state="formEdit"
+          :value="value[key]"
+          @change="update(key, $event)"
+        />
+        <!-- 同意框 -->
+        <cpt-agree
+          v-if="item.type === 'agree'"
+          :config="item"
+          :value="value[key]"
+          @change="update(key, $event)"
+        >
+          <slot :name="key"></slot>
+        </cpt-agree>
       </div>
     </van-form>
   </div>
@@ -36,7 +61,34 @@ export default {
             {
               label: "输入框",
               placeholder: "请输入",
+              required: true,
+              leftIcon: "info-o",
+            },
+          ],
+          [
+            "select",
+            {
+              label: "选择框",
+              type: "select",
+              columns: new Map(),
+              placeholder: "请选择",
               required: false,
+              leftIcon: "info-o",
+            },
+          ],
+          [
+            "load",
+            {
+              type: "load-idcard",
+              leftIcon: "info-o",
+              label: "身份证正反面上传",
+            },
+          ],
+          [
+            "agree",
+            {
+              type: "agree",
+              text: "我同意...",
             },
           ],
         ]);
@@ -75,7 +127,7 @@ export default {
       this.$emit("change", { ...this.value, [key]: data });
     },
     initialize() {
-      const form = new CptForm(this.config);
+      const form = new CptForm(this.formConfig);
       this.allCheckFunc = form.check;
       new OperateTitle(this.formConfig);
     },
@@ -107,9 +159,11 @@ export default {
   components: {
     "cpt-input": formBase.cpt_input,
     "cpt-select": formBase.cpt_select,
+    "cpt-load": formBase.cpt_load,
+    "cpt-agree": formBase.cpt_agree,
   },
 };
 </script>
-<style lang="less" scope>
+<style lang="sass" scope>
 @import "@common/assets/styles/cpt_form.sass";
 </style>

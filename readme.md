@@ -324,7 +324,7 @@
 > >			rules: [
 > >				//解析 js,jsx
 > >				{
-> >					test: /\.(j|jsx)s$/,
+> >					test: /\.(js|jsx)$/,
 > >					use: [
 > >						'babel-loader'
 > >					],
@@ -1115,6 +1115,21 @@
 > > ```
 
 
+### webpack优化(可选)
+#### 代码分离——动态加载
+* `npm install @babel/plugin-syntax-dynamic-import -D`
+* .babelrc 中添加 
+   ```   
+   plugins:[
+      "@babel/plugin-syntax-dynamic-import"
+   ]
+   ```
+* webpack.base.js 中添加
+   ```
+   output:{
+     chunkFilename:'js/[name].[hash5].js'
+   }
+   ```
 ### 待增加
 
 * tree-shaking配置

@@ -1,4 +1,38 @@
-// $backgoroundColor:#EDEDED;
-
-// .cpt-form-contain{
-// 	}
+.cpt-form-contain
+	.form-unit-content
+		position: relative
+		&::after
+			position: absolute
+			box-sizing: border-box
+			content: '   '
+			pointer-events: none
+			right: 10px
+			bottom: 0
+			left: 20px
+			border-bottom: 1px solid #ebedf0
+			transform: scaleY(0.5)
+		//load
+		.form-load-contain 
+			width: 100%
+			display: block
+			.form-load-image
+				display: flex
+				justify-content: flex-start
+				flex-wrap: wrap
+				.preload-image-contain
+					width: 130px
+					img 
+					   width: 100%
+		//agree
+		.agree-box-contain
+			height: 40px
+			display: flex
+			align-items: center
+			padding-left: 10px
+			font-size: 15px
+		.agree-error
+			.van-checkbox__label
+				color: red
+	.form-unit-error
+		input::placeholder,input
+			color: red

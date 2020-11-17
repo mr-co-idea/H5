@@ -45,13 +45,13 @@ class Rules {
 			}
 
 			if (!_state) {
-				info = item;
+				_info = item;
 				return false;
 			}
 		}
 
 		return {
-			_info, _state
+			info: _info, state: _state
 		}
 	}
 }

@@ -37,13 +37,14 @@ module.exports = config => {
 		},//入口文件
 		output: {
 			filename: 'js/[name].[hash:5].js',
+			chunkFilename:'js/[name].[hash5].js',
 			path: path.resolve(__dirname, `../../../dist/${$.project + '/' + $.outPath}`),
 		},
 		module: {
 			rules: [
 				//解析 js,jsx
 				{
-					test: /\.(j|jsx)s$/,
+					test: /\.(js|jsx)$/,
 					use: [
 						'babel-loader'
 					],
