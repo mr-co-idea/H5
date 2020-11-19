@@ -7,6 +7,19 @@
         :key="idx"
         :class="[item.class || null, 'form-unit-content']"
       >
+        <!-- 内容单元 -->
+
+        <!-- 提示栏 -->
+        <cpt-tips v-if="item.type === 'tips'" :config="item" />
+        <!-- 只读标题 -->
+        <cpt-readTitle v-if="item.type === 'readTitle'" :config="item" />
+        <!-- 可操作标题 -->
+        <cpt-operateTitle
+          v-if="item.type === 'operateTitle'"
+          v-model="index"
+          :config="item"
+          :check="submitHandler"
+        />
         <!-- 表单输入单元 -->
 
         <!-- 输入框 -->
@@ -30,6 +43,13 @@
           v-if="item.type ? item.type.indexOf('idcard') !== -1 : false"
           :config="item"
           :state="formEdit"
+          :value="value[key]"
+          @change="update(key, $event)"
+        />
+        <!-- 有效期选择器 -->
+        <cpt-period
+          v-if="item.type === 'period'"
+          :config="item"
           :value="value[key]"
           @change="update(key, $event)"
         />
@@ -57,6 +77,27 @@ export default {
       default() {
         return new Map([
           [
+            "operateTitle-1",
+            {
+              type: "operateTitle",
+              title: "第一页",
+            },
+          ],
+          [
+            "readTitle",
+            {
+              type: "readTitle",
+              title: "标题",
+            },
+          ],
+          [
+            "tips",
+            {
+              type: "tips",
+              text: "我是提示组件",
+            },
+          ],
+          [
             "input",
             {
               label: "输入框",
@@ -74,6 +115,23 @@ export default {
               placeholder: "请选择",
               required: false,
               leftIcon: "info-o",
+            },
+          ],
+          [
+            "period",
+            {
+              label: "身份证有效期",
+              type: "period",
+              placeholder: "请选择",
+              required: false,
+              leftIcon: "info-o",
+            },
+          ],
+          [
+            "operateTitle-2",
+            {
+              type: "operateTitle",
+              title: "第二页",
             },
           ],
           [
@@ -149,7 +207,7 @@ export default {
         }
         if (!_rule.state) {
           _result = false;
-          failed_info[item] = rule.info;
+          failed_info[item] = _rule.info;
         }
       }
       _result ? this.$emit("submit") : this.$emit("failed", failed_info);
@@ -160,7 +218,11 @@ export default {
     "cpt-input": formBase.cpt_input,
     "cpt-select": formBase.cpt_select,
     "cpt-load": formBase.cpt_load,
+    "cpt-period": formBase.cpt_period,
     "cpt-agree": formBase.cpt_agree,
+    "cpt-tips": formBase.cpt_tips,
+    "cpt-readTitle": formBase.cpt_readTitle,
+    "cpt-operateTitle": formBase.cpt_operateTitle,
   },
 };
 </script>

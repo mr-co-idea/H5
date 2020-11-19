@@ -66,8 +66,24 @@
 * 当type为type-[idcard/businesslicense/face]分别为身份证、营业执照、人脸
 * 添加新的图片上传 type-[新上传],config中添加`loadConfig:new Map()`来添加新配置，Map中
 的key命名的图片放置在common的images下
+### period
+* 有效期选择器
+* type为period
+* 数据格式为 [starttime]-[endtime]
 ### agree
 * 必须
 * config中text可以添加文本
 * 可以通过插槽添加内容 name为当前agree的字段名
-
+### tips
+* 信息提示组件
+* 可自定义样式，采用v-html进行内容灌入
+### readTitle 
+* 只读标题组件
+* 可自定义样式，采用{{}}进行内容灌入
+### operateTitle
+* 可操作性标题
+* 字段名必须是[字段]-[数字] eg:`operateTitle-1`
+* 默认第一页上一步和最后一页下一步隐藏
+* 可通过preFunc和nextFunc来自定义上一步和下一步,func优先级高于默认隐藏
+* 可以通过改变form组件的index来控制页面切换，默认页index:1
+* 点击下一步默认触发当前页面所有校验，校验不通过无法进行下一步操作（可结合form局部校验来实现当前页面自定义校验）

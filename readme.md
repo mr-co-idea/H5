@@ -318,7 +318,7 @@
 > >		},//入口文件
 > >		output: {
 > >			filename: 'js/[name].[hash:5].js',
-> >			path: path.resolve(__dirname, `../../../dist/${$.project + '/' + $.outPath}`),
+> >			path: path.resolve(__dirname, `../../dist/${$.project + '/' + $.outPath}`),
 > >		},
 > >		module: {
 > >			rules: [
@@ -1135,6 +1135,10 @@
 * tree-shaking配置
 * jest
 * eslint
+### 设计理念
+* 功能模块化划分，减少模块间的耦合
+* 增加代码的灵活性和可复用性
+* 分层：基础层和业务层
 ### 计划迭代
 * vue3 + vite + rollup 构建
 ### 补充说明

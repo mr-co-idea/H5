@@ -38,7 +38,7 @@ module.exports = config => {
 		output: {
 			filename: 'js/[name].[hash:5].js',
 			chunkFilename:'js/[name].[hash5].js',
-			path: path.resolve(__dirname, `../../../dist/${$.project + '/' + $.outPath}`),
+			path: path.resolve(__dirname, `../../dist/${$.project + '/' + $.outPath}`),
 		},
 		module: {
 			rules: [

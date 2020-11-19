@@ -3,8 +3,12 @@ import { Icon, Form, Field, Picker, Popup, DatetimePicker, Uploader, Toast, Chec
 
 import cpt_input from './input';
 import cpt_select from './select';
-import cpt_load from './load'
-import cpt_agree from './agree'
+import cpt_load from './load';
+import cpt_agree from './agree';
+import cpt_tips from './tips';
+import cpt_readTitle from './readTitle'
+import cpt_operateTitle from './operateTitle'
+import cpt_period from './period'
 
 function importVant() {
 	Vue.use(Icon)
@@ -25,5 +29,9 @@ export {
 	cpt_input,
 	cpt_select,
 	cpt_load,
-	cpt_agree
+	cpt_agree,
+	cpt_tips,
+	cpt_readTitle,
+	cpt_operateTitle,
+	cpt_period
 }

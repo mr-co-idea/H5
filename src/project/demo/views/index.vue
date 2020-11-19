@@ -12,6 +12,27 @@ export default {
       value: {},
       formConfig: new Map([
         [
+          "operateTitle-1",
+          {
+            type: "operateTitle",
+            title: "第一页",
+          },
+        ],
+        [
+          "readTitle",
+          {
+            type: "readTitle",
+            title: "标题",
+          },
+        ],
+        [
+          "tips",
+          {
+            type: "tips",
+            text: "我是提示组件",
+          },
+        ],
+        [
           "input",
           {
             label: "输入框",
@@ -25,13 +46,27 @@ export default {
           {
             label: "选择框",
             type: "select",
-            columns: new Map([
-              ["a", "1"],
-              ["b", "2"],
-            ]),
+            columns: new Map(),
             placeholder: "请选择",
             required: false,
             leftIcon: "info-o",
+          },
+        ],
+        [
+          "period",
+          {
+            label: "身份证有效期",
+            type: "period",
+            placeholder: "请选择",
+            required: false,
+            leftIcon: "info-o",
+          },
+        ],
+        [
+          "operateTitle-2",
+          {
+            type: "operateTitle",
+            title: "第二页",
           },
         ],
         [
