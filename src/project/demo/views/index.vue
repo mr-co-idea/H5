@@ -1,7 +1,7 @@
 <template>
   <div>
     <cpt-form v-model="value" :formEdit="formEdit" :formConfig="formConfig" />
-    <van-button @click="$router.push('/test')">跳转</van-button>
+    <!-- <van-button @click="$router.push('/test')">跳转</van-button> -->
   </div>
 </template>
 <script>
