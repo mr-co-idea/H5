@@ -42,7 +42,6 @@ const cptLoad = {
   },
   render() {
     const that = this;
-
     const exitConfig = new Map([
       [
         "idcard",
@@ -70,7 +69,7 @@ const cptLoad = {
                 val[item] != null && val[item].length !== 0)
               ? true
               : false;
-            if (!_result) return false;
+            if (!_result) break;
           }
           return _result;
         },
@@ -85,7 +84,7 @@ const cptLoad = {
     //load校验回调
     try {
       this.config.checkHook(async function onCheck() {
-        that.check = await rules.check(that.config.rules, this.value);
+        that.check = await rules.check(that.config.rules, that.value);
         return that.check;
       });
     } catch (e) {
@@ -116,8 +115,8 @@ const cptLoad = {
           <div class="form-load-image">
             <van-uploader {...{ props: val }}>
               <div
-                class={(this.check.state ? null : "form-load-error"),
-                  "preload-image-contain"}
+                class={(this.check.state ? null : "form-load-error") +
+                  " preload-image-contain"}
               >
                 <img src={require(`@images/${key}.png`)} />
               </div>

@@ -36,7 +36,6 @@ class Rules {
 		const keys = Object.keys(rules);
 		let _state = true;
 		let _info = '';
-
 		for (let item of keys) {
 			if (!rules.hasOwnProperty('non-empty') && val !== '' && val !== undefined && val !== null) {
 				_state = this.baseRules.get(item)(val);
@@ -46,10 +45,9 @@ class Rules {
 
 			if (!_state) {
 				_info = item;
-				return false;
+				break;
 			}
 		}
-
 		return {
 			info: _info, state: _state
 		}

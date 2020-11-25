@@ -1,3 +1,4 @@
+import { observer } from '@common/modules/utils/observe.js'
 class CptForm {
 	constructor(config) {
 		this.formConfig = config || new Map();
@@ -18,6 +19,25 @@ class CptForm {
 	dispose() {
 		this.formConfig.forEach((val, key) => {
 			this.disposeRequire(val, key);
+			const that = this;
+			try {
+				let _required = val['required'];
+				Object.defineProperty(val, 'required', {
+					enumerable: true,
+					configurable: true,
+					get: function () {
+						return _required
+					},
+					set: function (newVal) {
+						if (newVal !== _required) {
+							_required = newVal;
+							that.disposeRequire(val, key);
+						};
+					}
+				})
+			} catch (e) {
+				console.warn(e)
+			}
 		})
 	}
 
@@ -27,6 +47,9 @@ class CptForm {
 			itemConfig.rules["non-empty"] = true;
 			itemConfig["checkHook"] = (val) => (this.allCheckFunc[key] = val);//单元校验回调钩子
 		} else if (itemConfig.rules) {
+			if(itemConfig.rules['non-empty']){
+				delete itemConfig.rules['non-empty']
+			}
 			itemConfig["checkHook"] = (val) => (this.allCheckFunc[key] = val);
 		}
 	}

@@ -1,7 +1,8 @@
 <template>
   <div>
     <cpt-form v-model="value" :formEdit="formEdit" :formConfig="formConfig" />
-    <!-- <van-button @click="$router.push('/test')">跳转</van-button> -->
+    <van-button @click="$router.push('/test')">跳转</van-button>
+    <van-button @click="testFunc">测试</van-button>
   </div>
 </template>
 <script>
@@ -9,7 +10,13 @@ export default {
   data() {
     return {
       formEdit: true,
-      value: {},
+      test: { a: 1 },
+      value: {
+        load:{
+          idcardfront:[],
+          idcardreverse:[]
+        }
+      },
       formConfig: new Map([
         [
           "operateTitle-1",
@@ -32,12 +39,21 @@ export default {
             text: "我是提示组件",
           },
         ],
+                [
+          "load",
+          {
+            type: "load-idcard",
+            leftIcon: "info-o",
+            label: "身份证正反面上传",
+            required:true
+          },
+        ],
         [
           "input",
           {
             label: "输入框",
             placeholder: "请输入",
-            required: true,
+            required: false,
             leftIcon: "info-o",
           },
         ],
@@ -70,14 +86,6 @@ export default {
           },
         ],
         [
-          "load",
-          {
-            type: "load-idcard",
-            leftIcon: "info-o",
-            label: "身份证正反面上传",
-          },
-        ],
-        [
           "agree",
           {
             type: "agree",
@@ -86,6 +94,18 @@ export default {
         ],
       ]),
     };
+  },
+  mouted() {
+    console.info(this.test);
+  },
+  activated() {
+    console.info(this.test);
+  },
+  methods: {
+    testFunc(){
+      this.formConfig.get('input').required = false;
+      console.info(this.formConfig.get('input'))
+    }
   },
 };
 </script>

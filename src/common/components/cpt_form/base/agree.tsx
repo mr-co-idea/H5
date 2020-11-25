@@ -29,8 +29,8 @@ const AgreeProps = Vue.extend({
 });
 
 interface Check {
-	state:boolean,
-	info:string
+  state: boolean;
+  info: string;
 }
 
 @Component
@@ -40,6 +40,11 @@ export default class Agree extends AgreeProps {
     info: "",
   };
   mounted() {
+    try {
+      this.config.checkHook(this.onCheck);
+    } catch (e) {
+      console.warn(e);
+    }
     this.addRules();
   }
   addRules(): void {

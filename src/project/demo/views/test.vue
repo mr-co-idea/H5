@@ -15,5 +15,8 @@ export default {
     };
   },
   components: _com,
+  methods: {
+    
+  },
 };
 </script>
