@@ -14,7 +14,7 @@
       readonly
       :clickable="state"
       :clearable="state ? config.clearable : false"
-      :value="disposeValue(value)"
+      :value="newValue"
       @click="state ? onShowPicker(config) : null"
     />
     <!-- 下拉框 -->
@@ -76,7 +76,11 @@ export default {
       showPicker: false,
       columns: [],
       columnsCache: new Map(),
+      newValue: "",
     };
+  },
+  created() {
+    this.watchColumns();
   },
   mounted() {
     try {
@@ -90,8 +94,25 @@ export default {
       this.check = await rules.check(this.config.rules, this.value);
       return this.check;
     },
-    disposeValue(value) {
-      return this.config.columns.get(value);
+    watchColumns() {
+      const that = this;
+      let columns = this.config["columns"];
+      Object.defineProperty(this.config, "columns", {
+        enumerable: true,
+        configurable: true,
+        get: function () {
+          return columns;
+        },
+        set: function (newVal) {
+          if (newVal !== columns) {
+            columns = newVal;
+            that.disposeValue();
+          }
+        },
+      });
+    },
+    disposeValue() {
+      this.newValue = this.config.columns.get(this.value);
     },
     async onConfirm(value) {
       this.showPicker = false;
@@ -130,6 +151,13 @@ export default {
         return this.config.type.split("-")[1];
       } else {
         return "text";
+      }
+    },
+  },
+  watch: {
+    value(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.disposeValue();
       }
     },
   },

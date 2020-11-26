@@ -12,10 +12,11 @@ export default {
       formEdit: true,
       test: { a: 1 },
       value: {
-        load:{
-          idcardfront:[],
-          idcardreverse:[]
-        }
+        load: {
+          idcardfront: [],
+          idcardreverse: [],
+        },
+        // select:'a'
       },
       formConfig: new Map([
         [
@@ -39,13 +40,13 @@ export default {
             text: "我是提示组件",
           },
         ],
-                [
+        [
           "load",
           {
             type: "load-idcard",
             leftIcon: "info-o",
             label: "身份证正反面上传",
-            required:true
+            required: true,
           },
         ],
         [
@@ -63,6 +64,10 @@ export default {
             label: "选择框",
             type: "select",
             columns: new Map(),
+            // new Map([
+            //   ["a", "选项一"],
+            //   ["b", "选项二"],
+            // ]),
             placeholder: "请选择",
             required: false,
             leftIcon: "info-o",
@@ -95,17 +100,41 @@ export default {
       ]),
     };
   },
-  mouted() {
-    console.info(this.test);
+  mounted() {
+    this.testSelect();
   },
   activated() {
     console.info(this.test);
   },
   methods: {
-    testFunc(){
-      this.formConfig.get('input').required = false;
-      console.info(this.formConfig.get('input'))
-    }
+    testFunc() {
+      this.formConfig.get("input").required = false;
+      console.info(this.formConfig.get("input"));
+    },
+    testSelect() {
+      const that = this;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            code: 0,
+            data: [
+              { key: "a", val: "选项一" },
+              { key: "b", val: "选项二" },
+            ],
+          });
+        }, 1000);
+      }).then((res) => {
+        const map = new Map();
+        res.data.map((item) => {
+          map.set(item.key, item.val);
+        });
+        const select = that.formConfig.get("select");
+        that.value = { ...this.value, ["select"]: res.data[0].key };
+        setTimeout(() => {
+          select.columns = map;
+        }, 1000);
+      });
+    },
   },
 };
 </script>
