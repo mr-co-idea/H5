@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       formEdit: true,
-      test: { a: 1 },
+      test:[{a:1}],
       value: {
         load: {
           idcardfront: [],
@@ -102,6 +102,9 @@ export default {
   },
   mounted() {
     this.testSelect();
+     console.info(this.test);
+    console.info(this.value);
+    console.info(this.formConfig.get('select'));
   },
   activated() {
     console.info(this.test);

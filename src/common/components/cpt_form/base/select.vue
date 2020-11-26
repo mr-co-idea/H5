@@ -159,7 +159,7 @@ export default {
       if (newVal !== oldVal) {
         this.disposeValue();
       }
-    },
+    }
   },
 };
 </script>
