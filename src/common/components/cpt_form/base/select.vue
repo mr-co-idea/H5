@@ -156,10 +156,11 @@ export default {
   },
   watch: {
     value(newVal, oldVal) {
+      console.info(this.config.columns);
       if (newVal !== oldVal) {
         this.disposeValue();
       }
-    }
+    },
   },
 };
 </script>

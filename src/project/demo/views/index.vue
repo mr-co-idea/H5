@@ -102,9 +102,6 @@ export default {
   },
   mounted() {
     this.testSelect();
-    console.info(this.test);
-    console.info(this.value);
-    console.info(this.formConfig.get("select"));
   },
   activated() {
     console.info(this.test);
