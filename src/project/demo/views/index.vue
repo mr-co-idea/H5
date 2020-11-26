@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       formEdit: true,
-      test:[{a:1}],
+      test: [{ a: 1 }],
       value: {
         load: {
           idcardfront: [],
@@ -54,7 +54,7 @@ export default {
           {
             label: "输入框",
             placeholder: "请输入",
-            required: false,
+            required: true,
             leftIcon: "info-o",
           },
         ],
@@ -102,17 +102,16 @@ export default {
   },
   mounted() {
     this.testSelect();
-     console.info(this.test);
+    console.info(this.test);
     console.info(this.value);
-    console.info(this.formConfig.get('select'));
+    console.info(this.formConfig.get("select"));
   },
   activated() {
     console.info(this.test);
   },
   methods: {
     testFunc() {
-      this.formConfig.get("input").required = false;
-      console.info(this.formConfig.get("input"));
+      this.formConfig.get("input").required = false;//测试必填属性改变后，视图是否刷新
     },
     testSelect() {
       const that = this;
@@ -132,7 +131,7 @@ export default {
           map.set(item.key, item.val);
         });
         const select = that.formConfig.get("select");
-        that.value = { ...this.value, ["select"]: res.data[0].key };
+        that.value = { ...this.value, ["select"]: res.data[0].key };//测试下拉框动态赋值
         setTimeout(() => {
           select.columns = map;
         }, 1000);

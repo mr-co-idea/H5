@@ -12,6 +12,7 @@
 ### 在vue监听
 * 在vue中Map没有被监听，如果map值发生改变触发更新，需要劫持触发
 * Map中的对象不会在vue中被监听
+* Map中的value想要被监听时，通过Vue.observable
 
 ### select组件
 * key是双向绑定的，但val没有，需要key改变的时候触发

@@ -1,4 +1,5 @@
 import { observer } from '@common/modules/utils/observe.js'
+import Vue from 'vue';
 class CptForm {
 	constructor(config) {
 		this.formConfig = config || new Map();
@@ -35,6 +36,7 @@ class CptForm {
 						};
 					}
 				})
+				Vue.observable(val);
 			} catch (e) {
 				console.warn(e)
 			}
@@ -47,7 +49,7 @@ class CptForm {
 			itemConfig.rules["non-empty"] = true;
 			itemConfig["checkHook"] = (val) => (this.allCheckFunc[key] = val);//单元校验回调钩子
 		} else if (itemConfig.rules) {
-			if(itemConfig.rules['non-empty']){
+			if (itemConfig.rules['non-empty']) {
 				delete itemConfig.rules['non-empty']
 			}
 			itemConfig["checkHook"] = (val) => (this.allCheckFunc[key] = val);

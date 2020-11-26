@@ -60,9 +60,11 @@ export default {
         state: true,
         info: "",
       },
+      // selfConfig: this.config,
     };
   },
   mounted() {
+    console.info(this.selfConfig)
     try {
       this.config.checkHook(this.onCheck);
     } catch (e) {
