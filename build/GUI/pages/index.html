@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>工程管理</title>
+	<style>
+		html {
+			height: 100vh;
+			box-sizing: border-box;
+		}
+
+		body {
+			height: calc(100% - 40px);
+		}
+
+		h1 {
+			margin: 20px 0;
+		}
+
+		.content {
+			height: calc(100% - 60px);
+			display: flex;
+			justify-content: space-around;
+		}
+
+		section {
+			width: 30%;
+		}
+
+		.project-cmd>li:hover>.aim {
+			color: blue;
+			font-weight: bold;
+		}
+
+		.aim,
+		.aim-item {
+			cursor: pointer;
+		}
+
+		.aim-item:hover {
+			color: red;
+			font-weight: bold;
+		}
+
+		.aim-content {
+			display: none;
+		}
+
+		.aim-active {
+			display: block;
+		}
+
+		.project-cmd>li:hover .aim-content {
+			display: block;
+		}
+
+		.document-contain a {
+			display: block;
+		}
+
+		.project-form {
+			display: flex;
+			flex-wrap: nowrap;
+		}
+
+		.project-cmd>input {
+			flex: 1;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>工程管理</h1>
+	<div class="content">
+		<section>
+			<div>
+				<h3>项目列表</h3>
+				<ul id="cmd" class="project-cmd"></ul>
+			</div>
+		</section>
+		<section>
+			<h3>开发文档</h3>
+			<div id="docContent" class="document-contain"></div>
+		</section>
+		<section>
+			<h3>创建项目</h3>
+			<div class="create-project">
+				<form class="project-form" action="/create">
+					<input type="text" name="CN" placeholder="请输入项目中文名">
+					<input type="text" name="EN" placeholder="请输入项目英文名">
+					<button>创建</button>
+				</form>
+			</div>
+			<h3>项目测试</h3>
+		</section>
+	</div>
+	<script>
+		fetch('/getProject').then(res => res.json()).then(res => {
+
+			const cmdDOM = document.getElementById('cmd');
+
+			let _createDOM = ``;
+			res.data.map(project => {
+				_createDOM += `
+				<li>
+					<span class="aim">${project.name}</span>
+					<ul class="aim-content">
+						<li><span class="aim-item" cmd="dev">开发</span></li>
+						<li><span class="aim-item" cmd="build">生产</span></li>
+						<li><span class="aim-item" cmd="testDev">测试开发</span></li>
+						<li><span class="aim-item" cmd="testBuild">测试生产</span></li>
+					</ul>
+				<li>
+				`
+			});
+
+			cmdDOM.innerHTML = _createDOM;
+
+			document.querySelectorAll('.aim').forEach(item => {
+				item.onclick = function () {
+					let ele = item.parentElement.children[1].classList;
+					if (ele.contains('aim-active')) {
+						ele.remove('aim-active');
+					} else {
+						ele.add('aim-active');
+					}
+				};
+			});
+
+			document.querySelectorAll('.aim-item').forEach(item => {
+				item.onclick = function () {
+					const cmd = item.getAttribute('cmd');
+					const id = item.parentElement.parentElement.getAttribute('id');
+					const data = new URLSearchParams();
+					confirm('项目启动中...，请稍后...');
+					data.append('id', id);
+					data.append('cmd', cmd);
+					fetch('/runCmd', {
+						method: 'POST',
+						body: data
+					});
+				};
+			});
+		});
+
+		fetch('/getDocument').then(res => res.json()).then(res => {
+			let _DOM = ``;
+			res.data.map(item => {
+				_DOM += `<a href="/${item.file}doc">${item.name}</a>`;
+			});
+			document.getElementById('docContent').innerHTML = _DOM;
+		})
+	</script>
+</body>
+
+</html>

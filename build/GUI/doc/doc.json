@@ -1,0 +1,13 @@
+[{
+	"name": "项目使用手册",
+	"file": "use"
+}, {
+	"name": "项目构建文档",
+	"file": "README"
+}, {
+	"name": "form组件使用手册",
+	"file": "commmon/components/cpt_form/document/use"
+}, {
+	"name": "form组件构建指南",
+	"file": "commmon/components/cpt_form/document/readme"
+}]
