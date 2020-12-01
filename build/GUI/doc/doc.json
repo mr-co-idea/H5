@@ -10,4 +10,8 @@
 }, {
 	"name": "form组件构建指南",
 	"file": "commmon/components/cpt_form/document/readme"
-}]
+},{
+	"name":"GUI构建指南",
+	"file":"build/GUI/readme"
+}
+]

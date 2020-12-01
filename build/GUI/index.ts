@@ -67,7 +67,7 @@ app.use(async ctx => {
 				data: doc
 			}
 			break;
-			others:
+		default:
 			break;
 
 	};

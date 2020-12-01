@@ -9,6 +9,9 @@
 >> * 项目名非必填
 >> eg: `npm run create newproject` or `npm run create`
 >> eg: `默认复制demo.json中的配置
+
+> **C. npm run manage**
+>> * 启动工程GUI
 #### 二、配置子项目
 * 在文件 `build/project/[项目名].json` 中配置项目
 * 可以自定义启动环境，eg:testDev，注意：自定义指令中必须包含 dev/Dev | build/Build
