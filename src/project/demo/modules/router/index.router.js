@@ -11,7 +11,7 @@ const routes = [
 		meta: {
 			title: 'index',
 			requireAuth: true,
-			keepAlive: false
+			keepAlive: true
 		}
 	}, {
 		name: 'test',

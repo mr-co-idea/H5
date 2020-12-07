@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     testFunc() {
-      this.formConfig.get("input").required = false;//测试必填属性改变后，视图是否刷新
+      this.formConfig.get("input").required = false; //测试必填属性改变后，视图是否刷新
     },
     testSelect() {
       const that = this;
@@ -128,11 +128,16 @@ export default {
           map.set(item.key, item.val);
         });
         const select = that.formConfig.get("select");
-        that.value = { ...this.value, ["select"]: res.data[0].key };//测试下拉框动态赋值
+        that.value = { ...this.value, ["select"]: res.data[0].key }; //测试下拉框动态赋值
         setTimeout(() => {
           select.columns = map;
         }, 1000);
       });
+    },
+  },
+  watch: {
+    value(val) {
+      console.info(val);
     },
   },
 };

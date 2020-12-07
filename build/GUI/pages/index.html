@@ -76,7 +76,7 @@
 	<div class="content">
 		<section>
 			<div>
-				<h3>项目列表</h3>
+				<h3>项目列表</h3>(双击查看项目文档)
 				<ul id="cmd" class="project-cmd"></ul>
 			</div>
 		</section>
@@ -105,8 +105,8 @@
 			res.data.map(project => {
 				_createDOM += `
 				<li>
-					<span class="aim">${project.name}</span>
-					<ul class="aim-content">
+					<span class="aim" project="${project.id}">${project.name}</span>
+					<ul class="aim-content" id="${project.id}">
 						<li><span class="aim-item" cmd="dev">开发</span></li>
 						<li><span class="aim-item" cmd="build">生产</span></li>
 						<li><span class="aim-item" cmd="testDev">测试开发</span></li>
@@ -126,6 +126,9 @@
 						ele.add('aim-active');
 					}
 				};
+				item.ondblclick=function(){
+					window.location.href="/store?project="+item.getAttribute('project');
+				}
 			});
 
 			document.querySelectorAll('.aim-item').forEach(item => {

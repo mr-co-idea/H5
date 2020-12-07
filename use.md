@@ -41,3 +41,8 @@
 > **4.创建公共组件**
 >> * 可以使用.vue , .jsx ,.tsx进行构建
 >> * 详见，common/components/cpt_demo中的示例
+
+#### 四、文档
+* 在demo/doc中添加
+* 采用严格模式，不建议自定义
+* 自定义文档可使用doc-for-md工具包来管理
