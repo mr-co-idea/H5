@@ -76,7 +76,7 @@ app.use(async ctx => {
 		CN = decodeURI(CN);
 		const EN = ctx.url.split('=')[2];
 		ctx.body = `<h1>创建中。。。</h1>，具体进度请查看调试工具控制台`;
-		const workerProcess = exec(`node ${path.join(__dirname, '../config/node.create')} + ${EN} + ${CN}`, function (error, stdout, stderr) {
+		const workerProcess = exec(`node ${path.join(__dirname, '../config/create')} + ${EN} + ${CN}`, function (error, stdout, stderr) {
 			if (error) {
 				console.info(chalk.red('创建失败！'));
 				throw error

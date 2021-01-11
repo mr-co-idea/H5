@@ -34,7 +34,8 @@ module.exports = config => {
 						chunks: 'initial'
 					}
 				}
-			}
+			},
+			usedExports:true
 		},
 		module: {
 			rules: [

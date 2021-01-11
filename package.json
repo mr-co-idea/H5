@@ -82,5 +82,6 @@
     "vue-property-decorator": "^9.0.2",
     "vue-router": "^3.4.9",
     "vuex": "^3.5.1"
-  }
+  },
+  "sideEffects": false
 }
