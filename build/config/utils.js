@@ -95,7 +95,7 @@ const createJson = (EN, CN) => {
  * @param {String} EN 
  */
 const copyDir = (EN) => {
-	fa.mkdirSync(path.join(__dirname, `../../server/${EN}`))
+	fs.mkdirSync(path.join(__dirname, `../../server/${EN}`))
 }
 
 module.exports = {
